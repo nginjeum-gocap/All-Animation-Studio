@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AA Studio</title>
+  <title>All Animation Studio</title>
   <style>
     /* --- CSS UNTUK TAMPILAN --- */
     * {
@@ -25,24 +25,52 @@
       justify-content: space-between;
       align-items: center;
       background-color: #1f2833;
-      padding: 12px 20px; /* Sedikit disesuaikan biar pas tinggi menumpuknya */
+      padding: 12px 20px;
       position: sticky;
       top: 0;
       z-index: 100;
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      height: 70px; /* Dikunci tingginya agar navbar tidak naik-turun saat animasi */
     }
 
-    /* LOGO MENUMPUK KE BAWAH (Persis Gaya Vano Studio Lama) */
-    .logo {
+    /* AREA WADAH LOGO KIRI DAN TENGAH */
+    .logo-area {
+      position: relative;
+      flex-grow: 1;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    /* ANIMASI 1: Teks AA STUDIO di Pojok Kiri */
+    .logo-singkat {
+      position: absolute;
+      left: 0;
       font-size: 1.1rem;
       font-weight: bold;
       color: #66fcf1;
-      line-height: 1.2; /* Mengatur jarak antar baris atas dan bawah agar rapat dan rapi */
-      flex-shrink: 0;
+      line-height: 1.2;
       
-      /* Setup Animasi Muncul dari Kiri */
-      animation: slideDariKiri 1s ease-out forwards;
+      /* Eksekusi animasi: Muncul lalu memudar hilang dalam 2.5 detik */
+      animation: munculLaluHilang 2.5s ease-in-out forwards;
+    }
+
+    /* ANIMASI 2: Teks ALL ANIMATION STUDIO Bergeser ke Tengah */
+    .logo-lengkap {
+      position: absolute;
+      left: 0;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #66fcf1;
+      line-height: 1.2;
       opacity: 0;
+      
+      /* Eksekusi animasi: Jalan setelah 2.3 detik (menunggu AA Studio hilang) */
+      animation: geserKeTengah 2s ease-out 2.3s forwards;
+    }
+
+    .logo-lengkap .indent-teks {
+      padding-left: 25px; /* Membuat teks STUDIO agak menjorok ke kanan */
     }
 
     /* Tombol Titik Tiga */
@@ -56,10 +84,7 @@
       border-radius: 6px;
       border: 1px solid rgba(255, 255, 255, 0.1);
       flex-shrink: 0;
-      
-      /* Setup Animasi Muncul dari Kanan */
-      animation: slideDariKanan 1s ease-out forwards;
-      opacity: 0;
+      z-index: 10;
     }
 
     .menu-toggle span {
@@ -70,25 +95,36 @@
     }
 
     /* --- LOGIK REKAYASA ANIMASI (KEYFRAMES) --- */
-    @keyframes slideDariKiri {
-      from {
+    @keyframes munculLaluHilang {
+      0% {
         opacity: 0;
-        transform: translateX(-30px);
+        transform: translateX(-20px);
       }
-      to {
+      30% {
         opacity: 1;
         transform: translateX(0);
+      }
+      80% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(0);
+        visibility: hidden;
       }
     }
 
-    @keyframes slideDariKanan {
-      from {
+    @keyframes geserKeTengah {
+      0% {
         opacity: 0;
-        transform: translateX(30px);
-      }
-      to {
-        opacity: 1;
+        left: 0;
         transform: translateX(0);
+      }
+      100% {
+        opacity: 1;
+        left: 50%;
+        transform: translateX(-50%); /* Mengunci posisi tepat di tengah-tengah navbar */
       }
     }
 
@@ -127,7 +163,7 @@
 
     /* HERO SECTION */
     .hero {
-      height: calc(100vh - 65px);
+      height: calc(100vh - 70px);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -209,7 +245,11 @@
 
   <header class="navbar">
     
-    <div class="logo">AA<br>STUDIO</div>
+    <div class="logo-area">
+      <div class="logo-singkat">AA<br>STUDIO</div>
+      
+      <div class="logo-lengkap">ALL ANIMATION<br><span class="indent-teks">STUDIO</span></div>
+    </div>
 
     <div class="menu-toggle" id="menuBtn">
       <span></span>
@@ -250,5 +290,4 @@
   </script>
 
 </body>
-    </html>
-    
+</html>
