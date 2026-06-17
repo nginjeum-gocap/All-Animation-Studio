@@ -244,35 +244,48 @@
     }, 5000);
 
     /* ==========================================
-       PENGORBITAN POP-UP (KUNCI FOCUS & ANTI INSTANT CLOSE)
+       PENGORBITAN POP-UP (ANTI-SPAM REFRESH JALAN DI UTAMA)
        ========================================== */
     const welcomeModal = document.getElementById('welcomeModal');
 
-    fetch('popup.html')
-      .then(response => {
-        if (!response.ok) throw new Error('Gagal load popup.html');
-        return response.text();
-      })
-      .then(htmlKonten => {
-        welcomeModal.innerHTML = htmlKonten;
+    // Cek dulu di sini sebelum melakukan fetch
+    if (sessionStorage.getItem('popupShowed') !== 'true') {
+      
+      fetch('popup.html')
+        .then(response => {
+          if (!response.ok) throw new Error('Gagal load popup.html');
+          return response.text();
+        })
+        .then(htmlKonten => {
+          welcomeModal.innerHTML = htmlKonten;
 
-        const closeBtnTop = document.getElementById('closeBtnTop');
-        const closeBtnBottom = document.getElementById('closeBtnBottom');
-        const closeModal = () => welcomeModal.classList.remove('show');
+          const closeBtnTop = document.getElementById('closeBtnTop');
+          const closeBtnBottom = document.getElementById('closeBtnBottom');
+          const closeModal = () => {
+            welcomeModal.classList.remove('show');
+            sessionStorage.setItem('popupShowed', 'true'); // Kunci pas klik Okeh
+          };
 
-        if (closeBtnTop) {
-          closeBtnTop.addEventListener('click', closeModal);
-        }
+          if (closeBtnTop) {
+            closeBtnTop.addEventListener('click', closeModal);
+          }
 
-        if (closeBtnBottom) {
-          closeBtnBottom.addEventListener('click', () => {
-            window.location.href = 'index2.html';
-          });
-        }
+          if (closeBtnBottom) {
+            closeBtnBottom.addEventListener('click', () => {
+              sessionStorage.setItem('popupShowed', 'true'); // Kunci pas klik Lain Kali
+              window.location.href = 'index2.html';
+            });
+          }
 
-        welcomeModal.classList.add('show');
-      })
-      .catch(err => console.log("Info Pop-up:", err.message));
+          welcomeModal.classList.add('show');
+        })
+        .catch(err => console.log("Info Pop-up:", err.message));
+
+    } else {
+      // Kalau sudah true, langsung pastikan modal bersih/tersembunyi
+      welcomeModal.style.display = 'none';
+      welcomeModal.classList.remove('show');
+    }
   </script>
 
 </body>
