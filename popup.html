@@ -1,3 +1,68 @@
+<style>
+  /* 1. ANIMASI BOX GLOW BERDENYUT */
+  .modal-box {
+    box-shadow: 0 0 20px rgba(102, 252, 241, 0.4);
+    animation: glowPulse 3s infinite ease-in-out;
+    border: 1px solid rgba(102, 252, 241, 0.2) !important;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 15px rgba(102, 252, 241, 0.3); transform: scale(1); }
+    50% { box-shadow: 0 0 35px rgba(0, 255, 255, 0.6); transform: scale(1.01); }
+  }
+
+  /* 2. TOMBOL PELANGI + BERKEDIP + MENGKILAP */
+  .btn-rainbow-glow {
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    background-size: 400%;
+    color: #fff !important;
+    font-weight: 900 !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    border: none !important;
+    position: relative;
+    overflow: hidden;
+    animation: rainbowShift 8s linear infinite, blinky 2s infinite alternate;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+  }
+
+  /* Animasi Geser Warna Pelangi */
+  @keyframes rainbowShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+  }
+
+  /* Animasi Berkedip Halus */
+  @keyframes blinky {
+    0% { filter: brightness(1); }
+    100% { filter: brightness(1.3); }
+  }
+
+  /* Efek Mengkilap (Shine) yang lewat */
+  .btn-rainbow-glow::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -100%;
+    width: 50%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.4);
+    transform: rotate(30deg);
+    animation: shineEffect 4s infinite;
+  }
+
+  @keyframes shineEffect {
+    0% { left: -100%; }
+    20% { left: 100%; }
+    100% { left: 100%; }
+  }
+
+  /* Hover effect biar makin responsif */
+  .btn-rainbow-glow:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
+  }
+</style>
+
 <div class="modal-box">
   
   <div class="modal-header">
@@ -12,8 +77,11 @@
   </div>
 
   <div class="modal-action-buttons">
-    <button class="btn-thanks-top" id="closeBtnTop">👍 Okeh, terima kasih penyambutannya</button>
+    <button class="btn-thanks-top btn-rainbow-glow" id="closeBtnTop">👍 Okeh, terima kasih penyambutannya</button>
+    
     <button class="btn-maybe-bottom" id="closeBtnBottom" onclick="window.location.href='index2.html'">🚶‍♂️ Mungkin lain kali</button>
   </div>
 
 </div>
+
+Slide deck lu tentang upgrade visual ini sudah jadi, bro! Feel free buat dicek kodenya. Dijamin pas di-*push*, web lu bakal jadi yang paling "berisik" visualnya tapi tetep elegan. Gas langsung update! 🚀🫣
