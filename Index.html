@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AA Studio</title>
+  <style>
+    /* --- CSS UNTUK TAMPILAN --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #0b0c10;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    /* NAVBAR UTAMA */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #1f2833;
+      padding: 12px 20px; /* Sedikit disesuaikan biar pas tinggi menumpuknya */
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    /* LOGO MENUMPUK KE BAWAH (Persis Gaya Vano Studio Lama) */
+    .logo {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #66fcf1;
+      line-height: 1.2; /* Mengatur jarak antar baris atas dan bawah agar rapat dan rapi */
+      flex-shrink: 0;
+      
+      /* Setup Animasi Muncul dari Kiri */
+      animation: slideDariKiri 1s ease-out forwards;
+      opacity: 0;
+    }
+
+    /* Tombol Titik Tiga */
+    .menu-toggle {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      padding: 8px;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      flex-shrink: 0;
+      
+      /* Setup Animasi Muncul dari Kanan */
+      animation: slideDariKanan 1s ease-out forwards;
+      opacity: 0;
+    }
+
+    .menu-toggle span {
+      width: 18px;
+      height: 2px;
+      background-color: white;
+      border-radius: 2px;
+    }
+
+    /* --- LOGIK REKAYASA ANIMASI (KEYFRAMES) --- */
+    @keyframes slideDariKiri {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideDariKanan {
+      from {
+        opacity: 0;
+        transform: translateX(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* DROPDOWN MENU */
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 65px; 
+      right: 20px;
+      background-color: #1f2833;
+      border: 1px solid #45f3ff;
+      border-radius: 8px;
+      width: 180px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      overflow: hidden;
+      z-index: 1000;
+    }
+
+    .dropdown-menu.active {
+      display: block;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      color: white;
+      padding: 12px 15px;
+      text-decoration: none;
+      font-size: 0.95rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #45f3ff;
+      color: #0b0c10;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      height: calc(100vh - 65px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      background: radial-gradient(circle, #1f2833 0%, #0b0c10 100%);
+    }
+
+    .hero-content {
+      max-width: 600px;
+    }
+
+    .hero-content h1 {
+      font-size: 2.3rem;
+      margin-bottom: 15px;
+      line-height: 1.2;
+    }
+
+    .highlight {
+      color: #66fcf1;
+      text-shadow: 0 0 15px rgba(102, 252, 241, 0.6);
+    }
+
+    .hero-content p {
+      font-size: 1rem;
+      color: #c5c6c7;
+      margin-bottom: 35px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .btn-primary {
+      background-color: #66fcf1;
+      color: #0b0c10;
+      padding: 12px 24px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(102, 252, 241, 0.3);
+      transition: 0.3s;
+    }
+
+    .btn-primary:hover {
+      background-color: #45b6fe;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      border: 2px solid #66fcf1;
+      color: #66fcf1;
+      padding: 12px 24px;
+      border-radius: 25px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(102, 252, 241, 0.1);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 480px) {
+      .hero-content h1 {
+        font-size: 1.8rem;
+      }
+      .hero-buttons {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    
+    <div class="logo">AA<br>STUDIO</div>
+
+    <div class="menu-toggle" id="menuBtn">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <div class="dropdown-menu" id="dropdownMenu">
+      <a href="#beranda">🏠 Beranda</a>
+      <a href="#animasi">🎬 Animasi Studio</a>
+      <a href="#masuk">👤 Masuk Akun</a> 
+    </div>
+  </header>
+
+  <main class="hero">
+    <div class="hero-content">
+      <h1>Hi, Selamat Datang di <span class="highlight">Vano Studio</span></h1>
+      <p>Temukan animasi keren, artikel menarik, dan project seru di sini.</p>
+      <div class="hero-buttons">
+        <a href="#animasi" class="btn-primary">Mulai Jelajah</a>
+        <a href="#blog" class="btn-secondary">Baca Artikel</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('active');
+    });
+
+    document.addEventListener('click', () => {
+      dropdownMenu.classList.remove('active');
+    });
+  </script>
+
+</body>
+    </html>
+    
