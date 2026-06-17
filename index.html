@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>All Animation Studio</title>
   <style>
+    /* BIAR PAS DIKLIK GESERNYA MULUS */
+    html {
+      scroll-behavior: smooth;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -12,7 +17,7 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
-    /* BACKGROUND UTAMA: MINIMALIS DARK GRADIENT (BERSIH & ESTETIK) */
+    /* BACKGROUND UTAMA: MINIMALIS DARK GRADIENT */
     body {
       background-color: #0b0c10;
       color: #ffffff;
@@ -152,6 +157,26 @@
     .btn-secondary { border: 2px solid #66fcf1; color: #66fcf1; padding: 12px 24px; border-radius: 25px; text-decoration: none; font-weight: bold; transition: 0.3s; }
     .btn-primary:hover, .btn-secondary:hover { transform: translateY(-2px); }
 
+    /* EFEK GLOW CARD ANIMASI STUDIO */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+    }
+    .project-card {
+      background: linear-gradient(135deg, rgba(31, 40, 51, 0.6) 0%, rgba(11, 12, 16, 0.8) 100%);
+      border: 1px solid rgba(102, 252, 241, 0.2);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    }
+    .project-card:hover {
+      transform: translateY(-5px);
+      border-color: #00ffff;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.7), 0 0 20px rgba(102, 252, 241, 0.3);
+    }
+
     /* MODAL OVERLAY (BACKGROUND GELAP FOKUS) */
     .modal-overlay {
       position: fixed;
@@ -167,7 +192,7 @@
     .modal-overlay.show { display: flex; }
     
     .modal-box {
-      background-color: #12131c !important;
+      background-color: #12131c;
       border: 1px solid rgba(102, 252, 241, 0.3);
       border-radius: 24px;
       width: 92%;
@@ -178,9 +203,6 @@
     .modal-title-area p { font-size: 0.8rem; color: #66fcf1; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 4px; font-weight: 600; }
     .modal-title-area h2 { font-size: 1.35rem; color: #ffffff; font-weight: 800; line-height: 1.3; }
     .highlight-neon { color: #00ffff; }
-    .modal-action-buttons { display: flex; flex-direction: column; gap: 14px; }
-    .btn-thanks-top { width: 100%; background-color: #66fcf1; border: none; color: #0b0c10; padding: 15px; border-radius: 14px; font-size: 0.95rem; font-weight: bold; cursor: pointer; }
-    .btn-maybe-bottom { width: 100%; background-color: #1c1d26; border: 1px solid rgba(255, 255, 255, 0.08); color: #797a86; padding: 14px; border-radius: 14px; font-size: 0.95rem; font-weight: 600; cursor: pointer; }
 
     @media (max-width: 480px) {
       .hero-content h1 { font-size: 1.8rem; }
@@ -204,7 +226,7 @@
     </div>
   </header>
 
-  <main class="hero">
+  <main class="hero" id="beranda">
     <div class="hero-content">
       <h1>Hi, Selamat Datang di <span class="highlight">All Animation Studio</span></h1>
       <p>Temukan animasi keren, artikel menarik, dan project seru di sini.</p>
@@ -214,6 +236,38 @@
       </div>
     </div>
   </main>
+
+  <section id="animasi" style="padding: 80px 20px; max-width: 1200px; margin: 0 auto;">
+    
+    <div style="text-align: center; margin-bottom: 50px;">
+      <h2 style="font-size: 2rem; color: #66fcf1; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; filter: drop-shadow(0 0 10px rgba(102, 252, 241, 0.5));">
+        🎬 Animasi Studio
+      </h2>
+      <p style="color: #c5c6c7; font-size: 0.95rem; margin-top: 10px;">Daftar Artikel Blog & Project Seru Buatan Gua</p>
+    </div>
+
+    <div class="project-grid">
+      
+      <div class="project-card">
+        <div style="width: 100%; height: 160px; background-color: #1f2833; border-radius: 10px; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; color: #45a29e; font-size: 2rem;">
+          🌌
+        </div>
+        <h3 style="color: #66fcf1; font-size: 1.2rem; margin-bottom: 8px;">Misteri Lubang Hitam</h3>
+        <p style="color: #c5c6c7; font-size: 0.85rem; line-height: 1.5; margin-bottom: 15px;">Membahas tuntas apa yang terjadi jika sesuatu tersedot masuk ke dalam Black Hole di luar angkasa.</p>
+        <a href="#" style="display: inline-block; color: #0b0c10; background-color: #66fcf1; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.85rem;">Baca Selengkapnya</a>
+      </div>
+
+      <div class="project-card">
+        <div style="width: 100%; height: 160px; background-color: #1f2833; border-radius: 10px; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; color: #45a29e; font-size: 2rem;">
+          🎬
+        </div>
+        <h3 style="color: #66fcf1; font-size: 1.2rem; margin-bottom: 8px;">Showreel Animasi 2026</h3>
+        <p style="color: #c5c6c7; font-size: 0.85rem; line-height: 1.5; margin-bottom: 15px;">Kumpulan potongan karya animasi terbaik yang gua kerjain sepanjang tahun ini.</p>
+        <a href="#" style="display: inline-block; color: #0b0c10; background-color: #66fcf1; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 0.85rem;">Tonton Video</a>
+      </div>
+
+    </div>
+  </section>
 
   <div class="modal-overlay" id="welcomeModal"></div>
 
@@ -243,9 +297,7 @@
       logo2.classList.add('loop-logo2');
     }, 5000);
 
-    /* ==========================================
-       PENGORBITAN POP-UP (KUNCI FOCUS & ANTI INSTANT CLOSE)
-       ========================================== */
+    /* LOAD POPUP */
     const welcomeModal = document.getElementById('welcomeModal');
 
     fetch('popup.html')
