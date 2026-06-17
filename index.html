@@ -19,7 +19,7 @@
       overflow-x: hidden;
     }
 
-    /* NAVBAR UTAMA */
+    /* NAVBAR UTAMA STYLE GAMING */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -29,11 +29,11 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(0, 243, 255, 0.1); /* Shadow neon tipis di bawah navbar */
+      border-bottom: 1px solid rgba(102, 252, 241, 0.2);
       height: 70px;
     }
 
-    /* WADAH UTAMA LOGO (Dibuat mengunci ruang tengah secara penuh) */
     .logo-area {
       position: relative;
       flex-grow: 1;
@@ -42,7 +42,7 @@
       align-items: center;
     }
 
-    /* ANIMASI 1: AA STUDIO (Rata Kiri Pas) */
+    /* ANIMASI LOGO PEMBUKA */
     .logo-singkat {
       position: absolute;
       left: 0;
@@ -50,107 +50,109 @@
       font-weight: bold;
       color: #66fcf1;
       line-height: 1.2;
-      text-align: left;
+      text-shadow: 0 0 8px rgba(102, 252, 241, 0.5);
       animation: munculLaluHilang 2.5s ease-in-out forwards;
     }
 
-    /* ANIMASI 2: ALL ANIMATION STUDIO (Lurus Seimbang di Tengah) */
     .logo-lengkap {
       position: absolute;
-      width: 100%; /* Memaksa lebar penuh agar kalkulasi titik tengah akurat */
+      width: 100%;
       font-size: 1.05rem;
       font-weight: bold;
       color: #66fcf1;
       line-height: 1.2;
-      text-align: center; /* Memastikan teks atas dan bawah sejajar di tengah */
+      text-align: center;
+      text-shadow: 0 0 10px rgba(102, 252, 241, 0.6);
       opacity: 0;
       animation: geserKeTengah 2s ease-out 2.3s forwards;
     }
 
-    /* Tombol Titik Tiga */
+    /* TOMBOL MENU EFEK GLOW GAMING */
     .menu-toggle {
       display: flex;
       flex-direction: column;
       gap: 4px;
       cursor: pointer;
-      padding: 8px;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px;
+      background-color: rgba(102, 252, 241, 0.05);
+      border-radius: 8px;
+      border: 1px solid rgba(102, 252, 241, 0.3);
       flex-shrink: 0;
       z-index: 10;
+      transition: all 0.3s ease; /* Transisi halus pas disentuh */
+    }
+
+    /* Efek hover/sentuh menyala khas game */
+    .menu-toggle:hover, .menu-toggle.active-btn {
+      background-color: rgba(102, 252, 241, 0.2);
+      border-color: #66fcf1;
+      box-shadow: 0 0 12px rgba(102, 252, 241, 0.5);
+      transform: scale(1.05);
     }
 
     .menu-toggle span {
       width: 18px;
       height: 2px;
-      background-color: white;
+      background-color: #66fcf1;
       border-radius: 2px;
+      transition: all 0.3s ease;
     }
 
-    /* --- LOGIK REKAYASA ANIMASI BARU (BIAR LURUS GAK MIRING) --- */
+    /* --- LOGIK ANIMASI KEYFRAMES --- */
     @keyframes munculLaluHilang {
-      0% {
-        opacity: 0;
-        transform: translateX(-20px);
-      }
-      30% {
-        opacity: 1;
-        transform: translateX(0);
-      }
-      80% {
-        opacity: 1;
-        transform: translateX(0);
-      }
-      100% {
-        opacity: 0;
-        transform: translateX(0);
-        visibility: hidden;
-      }
+      0% { opacity: 0; transform: translateX(-20px); }
+      30% { opacity: 1; transform: translateX(0); }
+      80% { opacity: 1; transform: translateX(0); }
+      100% { opacity: 0; transform: translateX(0); visibility: hidden; }
     }
 
     @keyframes geserKeTengah {
-      0% {
-        opacity: 0;
-        transform: translateX(-40px); /* Bergeser mulus dari area kiri */
-      }
-      100% {
-        opacity: 1;
-        transform: translateX(0); /* Berhenti tepat di koordinat tengah murni */
-      }
+      0% { opacity: 0; transform: translateX(-40px); }
+      100% { opacity: 1; transform: translateX(0); }
     }
 
-    /* DROPDOWN MENU */
+    /* DROPDOWN MENU ANIMASI MELUNCUR (SLIDE DOWN) */
     .dropdown-menu {
-      display: none;
       position: absolute;
-      top: 65px; 
+      top: 75px; 
       right: 20px;
       background-color: #1f2833;
-      border: 1px solid #45f3ff;
-      border-radius: 8px;
-      width: 180px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      border: 1px solid #66fcf1;
+      border-radius: 10px;
+      width: 190px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.7), 0 0 10px rgba(102, 252, 241, 0.2);
       overflow: hidden;
       z-index: 1000;
+      
+      /* Menyembunyikan menu dengan set animasi awal scale & opacity */
+      opacity: 0;
+      transform: translateY(-15px) scale(0.95);
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Efek pantulan elastis halus */
     }
 
+    /* Ketika aktif, menu meluncur ke bawah dan membesar pas */
     .dropdown-menu.active {
-      display: block;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
     }
 
     .dropdown-menu a {
       display: block;
       color: white;
-      padding: 12px 15px;
+      padding: 14px 18px;
       text-decoration: none;
       font-size: 0.95rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.2s ease;
     }
 
     .dropdown-menu a:hover {
-      background-color: #45f3ff;
+      background-color: #66fcf1;
       color: #0b0c10;
+      padding-left: 22px; /* Efek teks bergeser sedikit ke kanan saat ditunjuk */
+      font-weight: bold;
     }
 
     /* HERO SECTION */
@@ -239,7 +241,6 @@
     
     <div class="logo-area">
       <div class="logo-singkat">AA<br>STUDIO</div>
-      
       <div class="logo-lengkap">ALL ANIMATION<br>STUDIO</div>
     </div>
 
@@ -274,10 +275,12 @@
     menuBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       dropdownMenu.classList.toggle('active');
+      menuBtn.classList.toggle('active-btn');
     });
 
     document.addEventListener('click', () => {
       dropdownMenu.classList.remove('active');
+      menuBtn.classList.remove('active-btn');
     });
   </script>
 
