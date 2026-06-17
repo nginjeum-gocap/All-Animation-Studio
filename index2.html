@@ -12,8 +12,9 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
+    /* BACKGROUND DENGAN TEKSTUR RADIAL HD */
     body {
-      background-color: #0b0c10;
+      background: radial-gradient(circle at center, #1a1c23 0%, #0b0c10 100%);
       color: #ffffff;
       height: 100vh;
       display: flex;
@@ -21,45 +22,71 @@
       align-items: center;
       text-align: center;
       padding: 20px;
+      overflow: hidden;
     }
 
+    /* KONTAINER DENGAN EFEK KACA HD + GLOWING HALUS */
     .container {
       max-width: 400px;
-      padding: 30px;
-      background-color: #15161e;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 35px;
+      background: linear-gradient(135deg, rgba(21, 22, 30, 0.7) 0%, rgba(15, 16, 22, 0.9) 100%);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 0, 85, 0.25);
       border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 
+                  0 0 25px rgba(255, 0, 85, 0.15); /* Glowing merah halus di box */
+      animation: containerPulse 4s infinite ease-in-out;
     }
 
+    @keyframes containerPulse {
+      0%, 100% { box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(255, 0, 85, 0.15); }
+      50% { box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 35px rgba(255, 0, 85, 0.3); }
+    }
+
+    /* TEXT JUDUL DENGAN EFEK NEON GLOW TAJAM */
     h1 {
       font-size: 1.8rem;
       color: #ff0055;
       margin-bottom: 15px;
-      text-shadow: 0 0 10px rgba(255, 0, 85, 0.3);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      filter: drop-shadow(0 0 12px rgba(255, 0, 85, 0.6)); /* Glow tajam pada text */
     }
 
     p {
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: #c5c6c7;
-      margin-bottom: 25px;
-      line-height: 1.5;
+      margin-bottom: 30px;
+      line-height: 1.6;
     }
 
+    /* TOMBOL DENGAN STRUKTUR PINTAR & GLOWING MAKSIMAL */
     .btn-retry {
       display: inline-block;
       background-color: #66fcf1;
       color: #0b0c10;
-      padding: 12px 30px;
-      border-radius: 14px;
+      padding: 14px 35px;
+      border-radius: 16px;
       text-decoration: none;
       font-weight: bold;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 15px rgba(102, 252, 241, 0.2);
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      box-shadow: 0 4px 15px rgba(102, 252, 241, 0.3), 
+                  0 0 15px rgba(102, 252, 241, 0.2); /* Double glow cyan */
     }
 
+    /* EFEK HOVER NYALA SAAT DISENTUH */
     .btn-retry:hover {
       background-color: #00ffff;
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 255, 255, 0.5), 
+                  0 0 30px rgba(0, 255, 255, 0.4); /* Glow menebal saat hover */
+    }
+    
+    .btn-retry:active {
+      transform: translateY(-1px);
     }
   </style>
 </head>
@@ -73,4 +100,3 @@
 
 </body>
 </html>
-
