@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>All Animation Studio</title>
   <style>
-    /* --- CSS UNTUK TAMPILAN --- */
+    /* --- CSS UTAMA --- */
     * {
       margin: 0;
       padding: 0;
@@ -19,7 +19,7 @@
       overflow-x: hidden;
     }
 
-    /* NAVBAR UTAMA STYLE GAMING */
+    /* NAVBAR STYLE UXPGAMES */
     .navbar {
       display: flex;
       justify-content: space-between;
@@ -29,8 +29,8 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 4px 15px rgba(0, 243, 255, 0.1); /* Shadow neon tipis di bawah navbar */
-      border-bottom: 1px solid rgba(102, 252, 241, 0.2);
+      box-shadow: 0 4px 20px rgba(0, 243, 255, 0.15); /* Efek glow di bawah navbar */
+      border-bottom: 1px solid rgba(102, 252, 241, 0.25);
       height: 70px;
     }
 
@@ -67,27 +67,27 @@
       animation: geserKeTengah 2s ease-out 2.3s forwards;
     }
 
-    /* TOMBOL MENU EFEK GLOW GAMING */
+    /* TOMBOL MENU LINGKARAN & ANIMASI BERUBAH JADI SILANG (X) */
     .menu-toggle {
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
       gap: 4px;
       cursor: pointer;
-      padding: 10px;
+      width: 40px;
+      height: 40px;
       background-color: rgba(102, 252, 241, 0.05);
-      border-radius: 8px;
+      border-radius: 50%; /* Dibuat bulat biar rapi pas muter */
       border: 1px solid rgba(102, 252, 241, 0.3);
       flex-shrink: 0;
-      z-index: 10;
-      transition: all 0.3s ease; /* Transisi halus pas disentuh */
+      z-index: 1010;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Efek hover/sentuh menyala khas game */
-    .menu-toggle:hover, .menu-toggle.active-btn {
-      background-color: rgba(102, 252, 241, 0.2);
-      border-color: #66fcf1;
-      box-shadow: 0 0 12px rgba(102, 252, 241, 0.5);
-      transform: scale(1.05);
+    .menu-toggle:hover {
+      background-color: rgba(102, 252, 241, 0.15);
+      box-shadow: 0 0 12px rgba(102, 252, 241, 0.4);
     }
 
     .menu-toggle span {
@@ -95,7 +95,22 @@
       height: 2px;
       background-color: #66fcf1;
       border-radius: 2px;
-      transition: all 0.3s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-origin: center;
+    }
+
+    /* LOGIK INTERAKSI BERUBAH JADI HURUF (X) PAS DIKLIK */
+    .menu-toggle.active-btn span:nth-child(1) {
+      transform: translateY(6px) rotate(45deg); /* Garis atas muter miring */
+    }
+
+    .menu-toggle.active-btn span:nth-child(2) {
+      opacity: 0; /* Garis tengah ngilang */
+      transform: scale(0);
+    }
+
+    .menu-toggle.active-btn span:nth-child(3) {
+      transform: translateY(-6px) rotate(-45deg); /* Garis bawah muter silang */
     }
 
     /* --- LOGIK ANIMASI KEYFRAMES --- */
@@ -111,27 +126,27 @@
       100% { opacity: 1; transform: translateX(0); }
     }
 
-    /* DROPDOWN MENU ANIMASI MELUNCUR (SLIDE DOWN) */
+    /* DROPDOWN MENU ANIMASI SLIDE DOWN SMOOTH */
     .dropdown-menu {
       position: absolute;
       top: 75px; 
       right: 20px;
       background-color: #1f2833;
       border: 1px solid #66fcf1;
-      border-radius: 10px;
-      width: 190px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.7), 0 0 10px rgba(102, 252, 241, 0.2);
+      border-radius: 12px;
+      width: 200px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 15px rgba(102, 252, 241, 0.2);
       overflow: hidden;
       z-index: 1000;
       
-      /* Menyembunyikan menu dengan set animasi awal scale & opacity */
+      /* Animasi transisi awal disembunyikan */
       opacity: 0;
-      transform: translateY(-15px) scale(0.95);
+      transform: translateY(-20px) scale(0.95);
       pointer-events: none;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Efek pantulan elastis halus */
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Ketika aktif, menu meluncur ke bawah dan membesar pas */
+    /* Ketika aktif menu meluncur dengan mewah */
     .dropdown-menu.active {
       opacity: 1;
       transform: translateY(0) scale(1);
@@ -141,17 +156,17 @@
     .dropdown-menu a {
       display: block;
       color: white;
-      padding: 14px 18px;
+      padding: 14px 20px;
       text-decoration: none;
       font-size: 0.95rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      transition: all 0.2s ease;
+      transition: all 0.25s ease;
     }
 
     .dropdown-menu a:hover {
-      background-color: #66fcf1;
-      color: #0b0c10;
-      padding-left: 22px; /* Efek teks bergeser sedikit ke kanan saat ditunjuk */
+      background-color: rgba(102, 252, 241, 0.1);
+      color: #66fcf1;
+      padding-left: 26px; /* Efek teks bergeser ke kanan pas di-hover */
       font-weight: bold;
     }
 
@@ -275,7 +290,7 @@
     menuBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       dropdownMenu.classList.toggle('active');
-      menuBtn.classList.toggle('active-btn');
+      menuBtn.classList.toggle('active-btn'); /* Memicu transformasi animasi silang (X) */
     });
 
     document.addEventListener('click', () => {
