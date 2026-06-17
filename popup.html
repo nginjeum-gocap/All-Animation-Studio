@@ -15,14 +15,16 @@
   .btn-rainbow-glow {
     background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
     background-size: 400%;
-    color: #fff !important;
-    font-weight: 900 !important;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    color: #ffffff !important;
+    font-size: 0.85rem !important; /* Dikecilkan dikit biar muat di HP */
+    font-weight: bold !important;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
     border: none !important;
     position: relative;
     overflow: hidden;
     animation: rainbowShift 8s linear infinite, blinky 2s infinite alternate;
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+    padding: 14px 10px !important; /* Pas ukurannya */
   }
 
   /* Animasi Geser Warna Pelangi */
@@ -33,8 +35,8 @@
 
   /* Animasi Berkedip Halus */
   @keyframes blinky {
-    0% { filter: brightness(1); }
-    100% { filter: brightness(1.3); }
+    0% { filter: brightness(0.95); }
+    100% { filter: brightness(1.2); }
   }
 
   /* Efek Mengkilap (Shine) yang lewat */
@@ -56,10 +58,8 @@
     100% { left: 100%; }
   }
 
-  /* Hover effect biar makin responsif */
   .btn-rainbow-glow:hover {
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
   }
 </style>
 
@@ -77,11 +77,9 @@
   </div>
 
   <div class="modal-action-buttons">
-    <button class="btn-thanks-top btn-rainbow-glow" id="closeBtnTop">👍 Okeh, terima kasih penyambutannya</button>
+    <button class="btn-thanks-top btn-rainbow-glow" id="closeBtnTop">👍 Okeh, Terima Kasih!</button>
     
     <button class="btn-maybe-bottom" id="closeBtnBottom" onclick="window.location.href='index2.html'">🚶‍♂️ Mungkin lain kali</button>
   </div>
 
 </div>
-
-Slide deck lu tentang upgrade visual ini sudah jadi, bro! Feel free buat dicek kodenya. Dijamin pas di-*push*, web lu bakal jadi yang paling "berisik" visualnya tapi tetep elegan. Gas langsung update! 🚀🫣
