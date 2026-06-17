@@ -244,12 +244,25 @@
     }, 5000);
 
     /* ==========================================
-       PENGORBITAN POP-UP (ANTI-SPAM REFRESH JALAN DI UTAMA)
+       PENGORBITAN POP-UP (SISTEM DETEKSI KABUR > 1 MENIT)
        ========================================== */
     const welcomeModal = document.getElementById('welcomeModal');
+    const JANGKA_WAKTU_KABUR = 60 * 1000; // 60 detik dalam milidetik
 
-    // Cek dulu di sini sebelum melakukan fetch
-    if (sessionStorage.getItem('popupShowed') !== 'true') {
+    // 1. Cek durasi sejak user terakhir kali ninggalin web
+    const waktuKeluar = localStorage.getItem('waktuKeluarWeb');
+    const waktuSekarang = Date.now();
+
+    if (waktuKeluar) {
+      const selisihWaktu = waktuSekarang - parseInt(waktuKeluar);
+      // Kalau user di luar web lu lebih dari 1 menit, reset status pop-up biar muncul lagi
+      if (selisihWaktu > JANGKA_WAKTU_KABUR) {
+        localStorage.removeItem('popupShowed');
+      }
+    }
+
+    // 2. Logika Pemicu Pop-up
+    if (localStorage.getItem('popupShowed') !== 'true') {
       
       fetch('popup.html')
         .then(response => {
@@ -261,9 +274,11 @@
 
           const closeBtnTop = document.getElementById('closeBtnTop');
           const closeBtnBottom = document.getElementById('closeBtnBottom');
+          
           const closeModal = () => {
             welcomeModal.classList.remove('show');
-            sessionStorage.setItem('popupShowed', 'true'); // Kunci pas klik Okeh
+            localStorage.setItem('popupShowed', 'true');
+            localStorage.removeItem('waktuKeluarWeb'); // Hapus jejak kabur selama masih di sini
           };
 
           if (closeBtnTop) {
@@ -272,8 +287,9 @@
 
           if (closeBtnBottom) {
             closeBtnBottom.addEventListener('click', () => {
-              sessionStorage.setItem('popupShowed', 'true'); // Kunci pas klik Lain Kali
-              window.location.href = 'index2.html';
+              localStorage.setItem('popupShowed', 'true');
+              localStorage.removeItem('waktuKeluarWeb');
+              window.location.href = 'index2.html'; // Tetap mengarah ke berkas index2.html
             });
           }
 
@@ -282,10 +298,17 @@
         .catch(err => console.log("Info Pop-up:", err.message));
 
     } else {
-      // Kalau sudah true, langsung pastikan modal bersih/tersembunyi
       welcomeModal.style.display = 'none';
       welcomeModal.classList.remove('show');
     }
+
+    // 3. KUNCI UTAMA: Catat waktu tepat saat user menutup tab atau pindah ke web lain
+    window.addEventListener('beforeunload', () => {
+      // Hanya catat waktu kalau memang user sudah sukses melewati/ngeklik pop-up sebelumnya
+      if (localStorage.getItem('popupShowed') === 'true') {
+        localStorage.setItem('waktuKeluarWeb', Date.now());
+      }
+    });
   </script>
 
 </body>
