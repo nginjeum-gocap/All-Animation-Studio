@@ -30,10 +30,10 @@
       top: 0;
       z-index: 100;
       box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      height: 70px; /* Dikunci tingginya agar navbar tidak naik-turun saat animasi */
+      height: 70px;
     }
 
-    /* AREA WADAH LOGO KIRI DAN TENGAH */
+    /* WADAH UTAMA LOGO (Dibuat mengunci ruang tengah secara penuh) */
     .logo-area {
       position: relative;
       flex-grow: 1;
@@ -42,7 +42,7 @@
       align-items: center;
     }
 
-    /* ANIMASI 1: Teks AA STUDIO di Pojok Kiri */
+    /* ANIMASI 1: AA STUDIO (Rata Kiri Pas) */
     .logo-singkat {
       position: absolute;
       left: 0;
@@ -50,27 +50,21 @@
       font-weight: bold;
       color: #66fcf1;
       line-height: 1.2;
-      
-      /* Eksekusi animasi: Muncul lalu memudar hilang dalam 2.5 detik */
+      text-align: left;
       animation: munculLaluHilang 2.5s ease-in-out forwards;
     }
 
-    /* ANIMASI 2: Teks ALL ANIMATION STUDIO Bergeser ke Tengah */
+    /* ANIMASI 2: ALL ANIMATION STUDIO (Lurus Seimbang di Tengah) */
     .logo-lengkap {
       position: absolute;
-      left: 0;
-      font-size: 1.1rem;
+      width: 100%; /* Memaksa lebar penuh agar kalkulasi titik tengah akurat */
+      font-size: 1.05rem;
       font-weight: bold;
       color: #66fcf1;
       line-height: 1.2;
+      text-align: center; /* Memastikan teks atas dan bawah sejajar di tengah */
       opacity: 0;
-      
-      /* Eksekusi animasi: Jalan setelah 2.3 detik (menunggu AA Studio hilang) */
       animation: geserKeTengah 2s ease-out 2.3s forwards;
-    }
-
-    .logo-lengkap .indent-teks {
-      padding-left: 25px; /* Membuat teks STUDIO agak menjorok ke kanan */
     }
 
     /* Tombol Titik Tiga */
@@ -94,7 +88,7 @@
       border-radius: 2px;
     }
 
-    /* --- LOGIK REKAYASA ANIMASI (KEYFRAMES) --- */
+    /* --- LOGIK REKAYASA ANIMASI BARU (BIAR LURUS GAK MIRING) --- */
     @keyframes munculLaluHilang {
       0% {
         opacity: 0;
@@ -118,13 +112,11 @@
     @keyframes geserKeTengah {
       0% {
         opacity: 0;
-        left: 0;
-        transform: translateX(0);
+        transform: translateX(-40px); /* Bergeser mulus dari area kiri */
       }
       100% {
         opacity: 1;
-        left: 50%;
-        transform: translateX(-50%); /* Mengunci posisi tepat di tengah-tengah navbar */
+        transform: translateX(0); /* Berhenti tepat di koordinat tengah murni */
       }
     }
 
@@ -248,7 +240,7 @@
     <div class="logo-area">
       <div class="logo-singkat">AA<br>STUDIO</div>
       
-      <div class="logo-lengkap">ALL ANIMATION<br><span class="indent-teks">STUDIO</span></div>
+      <div class="logo-lengkap">ALL ANIMATION<br>STUDIO</div>
     </div>
 
     <div class="menu-toggle" id="menuBtn">
