@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulasi E-Wallet - Edukasi</title>
+  <style>
+    body {
+      background-color: #0b0c10;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .wallet-card {
+      background-color: #1f2833;
+      border: 2px solid #66fcf1;
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 0 20px rgba(102, 252, 241, 0.2);
+      width: 300px;
+    }
+    .balance-title {
+      font-size: 0.9rem;
+      color: #c5c6c7;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .balance-amount {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #66fcf1;
+      margin: 15px 0;
+    }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    .btn-action {
+      background-color: transparent;
+      border: 1px solid #66fcf1;
+      color: #66fcf1;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+    .btn-action:hover {
+      background-color: #66fcf1;
+      color: #0b0c10;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wallet-card">
+    <div class="balance-title">Saldo Virtual Anda</div>
+    <div class="balance-amount" id="displaySaldo">Rp 0</div>
+    
+    <div class="btn-group">
+      <button class="btn-action" id="btnTambah">Simulasi Top Up</button>
+      <button class="btn-action" id="btnKurang">Simulasi Belanja</button>
+    </div>
+  </div>
+
+  <script>
+    // 1. Deklarasi elemen HTML yang akan dimanipulasi
+    const displaySaldo = document.getElementById('displaySaldo');
+    const btnTambah = document.getElementById('btnTambah');
+    const btnKurang = document.getElementById('btnKurang');
+
+    // 2. FUNGSI UTAMA: Mengambil saldo dari Local Storage browser
+    function dapatkanSaldoSistem() {
+      const saldoLokal = localStorage.getItem('saldoUser');
+      // Jika belum ada data (null), kembalikan nilai 0. Jika ada, ubah teks string menjadi angka (Integer)
+      return saldoLokal ? parseInt(saldoLokal) : 0;
+    }
+
+    // 3. FUNGSI UTAMA: Memperbarui tampilan layar dengan format mata uang rupiah
+    function updateTampilanLayar(jumlahSaldo) {
+      displaySaldo.textContent = "Rp " + jumlahSaldo.toLocaleString('id-ID');
+    }
+
+    // 4. LOGIKA AWAL: Jalankan fungsi saat halaman pertama kali dibuka
+    let saldoAktif = dapatkanSaldoSistem();
+    updateTampilanLayar(saldoAktif);
+
+    // 5. EVENT LISTENER: Aksi ketika tombol "Simulasi Top Up" diklik
+    btnTambah.addEventListener('click', () => {
+      // Tambah saldo aktif sebesar 10.000
+      saldoAktif += 10000;
+      
+      // Simpan nilai baru ke dalam Local Storage
+      localStorage.setItem('saldoUser', saldoAktif);
+      
+      // Perbarui angka yang dilihat user di layar
+      updateTampilanLayar(saldoAktif);
+    });
+
+    // 6. EVENT LISTENER: Aksi ketika tombol "Simulasi Belanja" diklik
+    btnKurang.addEventListener('click', () => {
+      // Validasi: Cek apakah saldo cukup untuk dikurangi
+      if (saldoAktif >= 5000) {
+        saldoAktif -= 5000;
+        localStorage.setItem('saldoUser', saldoAktif);
+        updateTampilanLayar(saldoAktif);
+      } else {
+        alert("Simulasi Gagal: Saldo virtual tidak mencukupi!");
+      }
+    });
+  </script>
+
+</body>
+</html>
