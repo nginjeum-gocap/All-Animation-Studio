@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Animation Studio - Gallery</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../css style/nevbar.css">
+
+  <style>
+    /* BIAR PAS DIKLIK GESERNYA MULUS */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* BACKGROUND UTAMA: MINIMALIS DARK GRADIENT */
+    body {
+      background-color: #0b0c10;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    /* NAVBAR UTAMA (SINKRON BERANDA & HALAMAN LAIN) */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(13, 15, 19, 0.75);
+      backdrop-filter: blur(8px);
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 243, 255, 0.15);
+      border-bottom: 1px solid rgba(102, 252, 241, 0.25);
+      height: 70px;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    /* TOMBOL DROPDOWN MENU */
+    .menu-toggle {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(102, 252, 241, 0.03);
+      border-radius: 50%;
+      border: 1px solid rgba(102, 252, 241, 0.25);
+      flex-shrink: 0;
+      z-index: 1010;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .menu-toggle:hover { background-color: rgba(102, 252, 241, 0.12); box-shadow: 0 0 15px rgba(102, 252, 241, 0.35); }
+    .menu-toggle span { width: 18px; height: 2px; background-color: #66fcf1; border-radius: 2px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    
+    .menu-toggle.active-btn span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .menu-toggle.active-btn span:nth-child(2) { opacity: 0; transform: scale(0); }
+    .menu-toggle.active-btn span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 75px; right: 20px;
+      background-color: #12141c;
+      border: 1px solid #66fcf1;
+      border-radius: 12px;
+      width: 200px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.65), 0 0 15px rgba(102, 252, 241, 0.15);
+      overflow: hidden;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(-25px) scale(0.93);
+      pointer-events: none;
+      transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .dropdown-menu.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+    .dropdown-menu a { display: block; color: white; padding: 14px 20px; text-decoration: none; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s; cursor: pointer; }
+    .dropdown-menu a:hover { background-color: rgba(102, 252, 241, 0.08); color: #66fcf1; padding-left: 26px; }
+
+    /* STUDIO KONTEN UTAMA */
+    .studio-container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 25px 15px;
+      text-align: center;
+    }
+
+    /* TULISAN SAMBUTAN */
+    .welcome-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+    .welcome-title span {
+      color: #66fcf1;
+      text-shadow: 0 0 12px rgba(102, 252, 241, 0.5);
+    }
+    .welcome-subtitle {
+      font-size: 0.85rem;
+      color: #c5c6c7;
+      margin-bottom: 25px;
+    }
+
+    /* FITUR PENELUSURAN (SEARCH) */
+    .search-box {
+      width: 100%;
+      position: relative;
+      margin-bottom: 30px;
+    }
+    .search-input {
+      width: 100%;
+      padding: 12px 20px;
+      background-color: #12141c;
+      border: 1px solid rgba(102, 252, 241, 0.3);
+      border-radius: 25px;
+      color: #ffffff;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+    .search-input:focus {
+      border-color: #66fcf1;
+      box-shadow: 0 0 15px rgba(102, 252, 241, 0.3);
+    }
+    .search-input::placeholder {
+      color: #797a86;
+    }
+
+    /* GRID CARD ANIMASI */
+    .animation-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .anim-card {
+      background-color: #12131c;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+    }
+    .anim-card:hover {
+      border-color: rgba(102, 252, 241, 0.2);
+    }
+
+    /* Bagian Kotak Gambar (Thumbnail) */
+    .anim-thumbnail {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background-color: #1f2833;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      cursor: pointer;
+      transition: filter 0.2s ease;
+    }
+    .anim-thumbnail:hover {
+      filter: brightness(1.1);
+    }
+
+    /* Bagian Bawah Persegi untuk Caption */
+    .anim-caption {
+      padding: 10px;
+      text-align: left;
+      background-color: #151722;
+      border-top: 1px solid rgba(255, 255, 255, 0.03);
+    }
+    .anim-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .anim-desc {
+      font-size: 0.75rem;
+      color: #66fcf1;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="logo-area" onclick="location.reload();">
+      <div class="logo-vv-container">
+        <span class="char-v v-flipped">V</span>
+        <span class="char-v v-normal">V</span>
+      </div>
+      
+      <div class="text-wrapper">
+        <span class="logo-text-top">
+          <span class="gold-a">A</span>LL <span class="gold-a">A</span>NIMATION
+        </span>
+        <span class="logo-text-bottom">STUDIO</span>
+      </div>
+    </div>
+    
+    <div class="menu-toggle" id="menuBtn"><span></span><span></span><span></span></div>
+    
+    <div class="dropdown-menu" id="dropdownMenu">
+      <a href="../index.html">🏠 Beranda</a>
+      <a onclick="location.reload();">🎬 Animasi Studio</a>
+      <a href="#masuk">👤 Masuk Akun</a> 
+    </div>
+  </header>
+
+  <main class="studio-container">
+    
+    <h2 class="welcome-title">Welcome to <span>Studio</span></h2>
+    <p class="welcome-subtitle">Koleksi karya animasi dan project kreativitas kami.</p>
+
+    <div class="search-box">
+      <input type="text" class="search-input" id="searchAnim" placeholder="Cari judul animasi...">
+    </div>
+
+    <div class="animation-grid" id="animGrid">
+      
+      <div class="anim-card">
+        <div class="anim-thumbnail" id="thumb-dana" style="background-image: url('../img/dana.jpg');"></div>
+        <div class="anim-caption">
+          <div class="anim-title">Nginjeum Duit</div>
+          <div class="anim-desc">DANA Otomatis</div>
+        </div>
+      </div>
+
+      <div class="anim-card">
+        <div class="anim-thumbnail" id="thumb-stickman" style="background-image: url('https://picsum.photos/300/300?random=2');"></div>
+        <div class="anim-caption">
+          <div class="anim-title">Stickman Epic</div>
+          <div class="anim-desc">Pivot Animator</div>
+        </div>
+      </div>
+
+      <div class="anim-card">
+        <div class="anim-thumbnail" id="thumb-mc" style="background-image: url('https://picsum.photos/300/300?random=3');"></div>
+        <div class="anim-caption">
+          <div class="anim-title">Minecraft Render</div>
+          <div class="anim-desc">Cinema 4D</div>
+        </div>
+      </div>
+
+      <div class="anim-card">
+        <div class="anim-thumbnail" id="thumb-intro" style="background-image: url('https://picsum.photos/300/300?random=4');"></div>
+        <div class="anim-caption">
+          <div class="anim-title">Intro Template</div>
+          <div class="anim-desc">After Effects</div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // LOGIKA NAVBAR DROPDOWN
+    const menuBtn = document.getElementById('menuBtn');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('active');
+      menuBtn.classList.toggle('active-btn');
+    });
+
+    document.addEventListener('click', () => {
+      dropdownMenu.classList.remove('active');
+      menuBtn.classList.remove('active-btn');
+    });
+
+    // ==========================================
+    // LOGIKA SEARCH & REDIREKSI KLIK THUMBNAIL
+    // ==========================================
+    const searchInput = document.getElementById('searchAnim');
+    const cards = document.querySelectorAll('.anim-card');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const filterTeks = e.target.value.toLowerCase();
+        cards.forEach(card => {
+          const judul = card.querySelector('.anim-title').textContent.toLowerCase();
+          const deskripsi = card.querySelector('.anim-desc').textContent.toLowerCase();
+          
+          if (judul.includes(filterTeks) || deskripsi.includes(filterTeks)) {
+            card.style.setProperty('display', 'flex', 'important');
+          } else {
+            card.style.setProperty('display', 'none', 'important');
+          }
+        });
+      });
+    }
+
+    // SCRIPT REDIREKSI LINK KLIK THUMBNAIL
+    const thumbDana = document.getElementById('thumb-dana');
+    if (thumbDana) {
+      thumbDana.addEventListener('click', () => {
+        window.location.href = 'register'; 
+      });
+    }
+
+    const thumbStickman = document.getElementById('thumb-stickman');
+    if (thumbStickman) {
+      thumbStickman.addEventListener('click', () => {
+        window.location.href = 'file_stickman.html'; 
+      });
+    }
+
+    const thumbMc = document.getElementById('thumb-mc');
+    if (thumbMc) {
+      thumbMc.addEventListener('click', () => {
+        window.location.href = 'file_minecraft.html'; 
+      });
+    }
+
+    const thumbIntro = document.getElementById('thumb-intro');
+    if (thumbIntro) {
+      thumbIntro.addEventListener('click', () => {
+        window.location.href = 'file_intro.html'; 
+      });
+    }
+  </script>
+
+</body>
+</html>

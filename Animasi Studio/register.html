@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght=800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0; padding: 0; background: transparent;
+            font-family: 'JetBrains Mono', monospace;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; overflow: hidden;
+        }
+        
+        .modal-box {
+            position: relative;
+            background-color: #111;
+            padding: 30px 25px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 360px;
+            text-align: center;
+            color: white;
+            box-sizing: border-box;
+            
+            border: 3px solid transparent;
+            background-image: linear-gradient(#111, #111), 
+                              linear-gradient(var(--sudut-pelangi, 0deg), #ff3333, #ffff33, #33ff33, #33ffff, #3333ff, #ff33ff);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            
+            animation: efekGlowPelangi 4s linear infinite;
+        }
+
+        @property --sudut-pelangi {
+            syntax: '<angle>';
+            inherits: false;
+            initial-value: 0deg;
+        }
+
+        @keyframes efekGlowPelangi {
+            0% { --sudut-pelangi: 0deg; box-shadow: 0 0 15px rgba(255, 51, 51, 0.5); }
+            50% { --sudut-pelangi: 180deg; box-shadow: 0 0 15px rgba(51, 255, 255, 0.5); }
+            100% { --sudut-pelangi: 360deg; box-shadow: 0 0 15px rgba(255, 51, 51, 0.5); }
+        }
+
+        h3 {
+            color: #33ff33; margin-top: 0; margin-bottom: 10px; font-size: 1.2rem;
+            text-shadow: 0 0 10px rgba(51, 255, 51, 0.3);
+        }
+        p {
+            font-size: 0.8rem; color: #aaa; margin-bottom: 20px; line-height: 1.4;
+        }
+        .input-dana {
+            width: 100%; padding: 12px; background-color: #222;
+            border: 1px solid #33ff33; border-radius: 8px;
+            color: #fff; font-size: 1rem; font-family: 'JetBrains Mono', monospace;
+            text-align: center; outline: none; margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        
+        .error-container {
+            min-height: 75px; margin-bottom: 15px; font-size: 0.75rem;
+            color: #ff3333; font-weight: 900; display: flex;
+            justify-content: center; align-items: center;
+            line-height: 1.6;
+            width: 100%;
+        }
+        #log-status-wrapper {
+            white-space: pre-wrap; 
+            text-align: left; 
+            width: 100%;
+            display: inline-block;
+        }
+        .status-sukses {
+            color: #33ff33 !important;
+            text-shadow: 0 0 5px rgba(51, 255, 51, 0.5);
+        }
+        .kursor-error {
+            display: inline-block; background-color: #33ff33; width: 8px; height: 0.9rem;
+            animation: kedipError 0.6s infinite; vertical-align: middle;
+        }
+        @keyframes kedipError { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+
+        .btn-submit {
+            width: 100%; padding: 12px; background: #33ff33;
+            border: none; border-radius: 8px; color: #000;
+            font-weight: bold; font-size: 1rem; font-family: 'JetBrains Mono', monospace;
+            cursor: pointer; transition: all 0.3s;
+        }
+        .btn-submit:hover { box-shadow: 0 0 15px rgba(51, 255, 51, 0.6); }
+
+        #areaSalin {
+            display: none;
+        }
+        .box-link {
+            background-color: #222; border: 1px dashed #33ff33;
+            padding: 12px; border-radius: 8px; font-size: 0.75rem;
+            word-break: break-all; color: #00ffcc; margin-bottom: 20px;
+            user-select: all; text-align: left; line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="modal-box">
+        <div id="formInputUtama">
+            <h3>Registrasi Tautan</h3>
+            <p>Masukkan link tujuan Anda terlebih dahulu sebelum memulai sistem.</p>
+            
+            <input type="text" class="input-dana" id="dataInput" placeholder="Masukkan Link Dana Anda..." required>
+            
+            <div class="error-container">
+                <div id="log-status-wrapper"><span id="log-error"></span><span class="kursor-error" id="kursor-err"></span></div>
+            </div>
+
+            <button class="btn-submit" id="btnDaftar">Selesai & Lanjutkan</button>
+        </div>
+
+        <div id="areaSalin">
+            <h3>Salin Link Manual</h3>
+            <p>Data berhasil diverifikasi. Silakan salin tautan di bawah ini secara manual untuk melanjutkan akses.</p>
+            
+            <div class="box-link" id="teksLinkHasil">Menyiapkan tautan...</div>
+            
+            <button class="btn-submit" id="btnSalinTeks">Salin Tautan 📋</button>
+        </div>
+    </div>
+
+    <script>
+        const wadahError = document.getElementById("log-error");
+        const kursorErr = document.getElementById("kursor-err");
+        const wadahWrapper = document.getElementById("log-status-wrapper");
+        
+        let keurNgetik = false; 
+
+        function ketikEfekAsync(teks, elemenTarget) {
+            return new Promise((resolve) => {
+                let index = 0;
+                function mulaiKetik() {
+                    if (index < teks.length) {
+                        elemenTarget.textContent += teks[index];
+                        index++;
+                        setTimeout(mulaiKetik, 35); 
+                    } else {
+                        resolve();
+                    }
+                }
+                mulaiKetik();
+            });
+        }
+
+        const tunggu = (ms) => new Promise(res => setTimeout(res, ms));
+
+        document.getElementById('btnDaftar').addEventListener('click', async () => {
+            if (keurNgetik) return;
+
+            const data = document.getElementById('dataInput').value.trim();
+            const polaStruktur = /^https:\/\/link\.dana\.id\/minta\?full_url=https:\/\/qr\.dana\.id\/v1\/([0-9]*)$/;
+
+            wadahWrapper.className = ""; 
+            wadahError.textContent = "";
+            kursorErr.style.display = "inline-block";
+
+            // === VALIDASI FORM ===
+            if (data === "") {
+                keurNgetik = true;
+                await ketikEfekAsync("Isi Link Terlebih Dahulu ⚠️", wadahError);
+                keurNgetik = false; return;
+            }
+
+            const hasilCocok = data.match(polaStruktur);
+            if (!hasilCocok) {
+                keurNgetik = true;
+                await ketikEfekAsync("Format Link DANA Salah atau Tidak Valid! ❌", wadahError);
+                keurNgetik = false; return;
+            }
+
+            const angkaEkor = hasilCocok[1]; 
+            if (angkaEkor.length > 24) {
+                keurNgetik = true;
+                await ketikEfekAsync("Banyak banget! Padahal cuma 24 angka di belakang v1/ ⚠️", wadahError);
+                keurNgetik = false; return;
+            }
+
+            if (angkaEkor.length < 24) {
+                keurNgetik = true;
+                await ketikEfekAsync("Kurang! Harus ada tepat 24 angka di belakang v1/ ⚠️", wadahError);
+                keurNgetik = false; return;
+            }
+
+            // === JIKA SELESAI & VALID ===
+            keurNgetik = true;
+
+            // Sembunyikan elemen input, tombol, judul, dan paragraf atas
+            document.querySelector('#formInputUtama h3').style.display = 'none';
+            document.querySelector('#formInputUtama p').style.display = 'none';
+            document.getElementById('dataInput').style.display = 'none';
+            document.getElementById('btnDaftar').style.display = 'none';
+
+            wadahWrapper.className = "status-sukses"; 
+
+            // Jalankan animasi teks berurutan
+            await ketikEfekAsync("⚙️=>Link yang anda input valid...\n", wadahError);
+            await tunggu(1000); 
+
+            await ketikEfekAsync("⚙️=>Sedang dibuat....\n", wadahError);
+            await tunggu(1200); 
+
+            await ketikEfekAsync("⚙️=>Link sukses dibuat!!!", wadahError);
+            await tunggu(1000); 
+
+            kursorErr.style.display = "none"; 
+
+            // Simpan data & generate link halaman tujuan
+            localStorage.setItem('linkUser', data);
+            const domainAsli = window.location.origin + window.location.pathname.replace('register.html', '');
+            const linkHasilGenerate = `${domainAsli}animation1.html`;
+            
+            document.getElementById('teksLinkHasil').textContent = linkHasilGenerate;
+
+            // Tampilkan halaman salin tautan
+            document.getElementById('formInputUtama').style.display = 'none';
+            document.getElementById('areaSalin').style.display = 'block';
+            keurNgetik = false;
+        });
+
+        document.getElementById('btnSalinTeks').addEventListener('click', () => {
+            const teksLink = document.getElementById('teksLinkHasil').textContent;
+            navigator.clipboard.writeText(teksLink).then(() => {
+                alert("Tautan sukses disalin! Silakan tempel secara manual di browser Anda. 👍");
+            }).catch(err => {
+                alert("Gagal menyalin otomatis. Silakan blok manual teks di atas.");
+            });
+        });
+    </script>
+</body>
+</html>

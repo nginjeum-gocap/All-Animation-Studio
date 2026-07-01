@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rahasia Animasi Teks Mengetik - All Animation Studio</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../css style/nevbar.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* BACKGROUND UTAMA: HITAM PEKAT */
+    body {
+      background-color: #050608;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    /* NAVBAR UTAMA (SINKRON DENGAN BERANDA) */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(13, 15, 19, 0.75);
+      backdrop-filter: blur(8px);
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0, 243, 255, 0.15);
+      border-bottom: 1px solid rgba(102, 252, 241, 0.25);
+      height: 70px;
+    }
+
+    /* SISI KIRI: TEMPAT LOGO BARU DAN TEKS */
+    .logo-area {
+      display: flex;
+      align-items: center;
+      flex-grow: 1;
+      height: 100%;
+    }
+
+    /* TOMBOL MENU / GARIS TIGA */
+    .menu-toggle {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(102, 252, 241, 0.03);
+      border-radius: 50%;
+      border: 1px solid rgba(102, 252, 241, 0.25);
+      flex-shrink: 0;
+      z-index: 1010;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .menu-toggle:hover { background-color: rgba(102, 252, 241, 0.12); box-shadow: 0 0 15px rgba(102, 252, 241, 0.35); }
+    .menu-toggle span { width: 18px; height: 2px; background-color: #66fcf1; border-radius: 2px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    
+    .menu-toggle.active-btn span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .menu-toggle.active-btn span:nth-child(2) { opacity: 0; transform: scale(0); }
+    .menu-toggle.active-btn span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* MENU DROPDOWN */
+    .dropdown-menu {
+      position: absolute;
+      top: 75px; right: 20px;
+      background-color: #12141c;
+      border: 1px solid #66fcf1;
+      border-radius: 12px;
+      width: 200px;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.65), 0 0 15px rgba(102, 252, 241, 0.15);
+      overflow: hidden;
+      z-index: 1000;
+      opacity: 0;
+      transform: translateY(-25px) scale(0.93);
+      pointer-events: none;
+      transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .dropdown-menu.active { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+    .dropdown-menu a { display: block; color: white; padding: 14px 20px; text-decoration: none; font-size: 0.95rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); transition: all 0.3s; cursor: pointer; }
+    .dropdown-menu a:hover { background-color: rgba(102, 252, 241, 0.08); color: #66fcf1; padding-left: 26px; }
+
+    /* ==========================================
+       LAYOUT HALAMAN BACA ARTIKEL
+       ========================================== */
+    .article-page {
+      max-width: 750px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    /* TOMBOL KEMBALI: LED RGB GLOWING & MENGKILAP */
+    .btn-back-container {
+      margin-bottom: 35px;
+      display: inline-block;
+      position: relative;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 22px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #ffffff;
+      text-decoration: none;
+      background: #0d1117;
+      border-radius: 30px;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-back-container::before {
+      content: '';
+      position: absolute;
+      top: -2px; left: -2px; right: -2px; bottom: -2px;
+      background: linear-gradient(45deg, #00ffff, #00ff7f, #ffff00, #ff0055, #7f00ff, #00ffff);
+      background-size: 400%;
+      border-radius: 32px;
+      z-index: 0;
+      animation: gerakLED 6s linear infinite;
+      filter: blur(2px);
+    }
+
+    .btn-back-container::after {
+      content: '';
+      position: absolute;
+      top: -2px; left: -2px; right: -2px; bottom: -2px;
+      background: linear-gradient(45deg, #00ffff, #00ff7f, #ffff00, #ff0055, #7f00ff, #00ffff);
+      background-size: 400%;
+      border-radius: 32px;
+      z-index: 0;
+      animation: gerakLED 6s linear infinite;
+      filter: blur(12px);
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn-back::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      transform: skewX(-25deg);
+      transition: none;
+    }
+
+    .btn-back-container:hover::after { opacity: 1; }
+    .btn-back-container:hover .btn-back { background: #121721; color: #00ffff; text-shadow: 0 0 5px #00ffff; }
+    .btn-back-container:hover .btn-back::before { left: 150%; transition: all 0.6s ease; }
+
+    @keyframes gerakLED {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Header Artikel */
+    .article-header-meta {
+      font-size: 0.8rem;
+      color: #66fcf1;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    
+    .article-title {
+      font-size: 2.2rem;
+      line-height: 1.3;
+      color: #ffffff;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 10px rgba(255,255,255,0.05);
+    }
+
+    .article-sub-info {
+      font-size: 0.85rem;
+      color: #797a86;
+      border-bottom: 1px solid rgba(102, 252, 241, 0.15);
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+
+    /* Isi Tulisan/Content Konten */
+    .article-body {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #c5c6c7;
+    }
+
+    .article-body p { margin-bottom: 22px; }
+
+    /* Tag Highlighter Teks Penting */
+    .glow-text {
+      color: #66fcf1;
+      text-shadow: 0 0 10px rgba(102, 252, 241, 0.4);
+      font-weight: 600;
+    }
+
+    /* Kotak Code Snippet (Contoh Kodingan) */
+    .code-box {
+      background-color: #12141c;
+      border: 1px solid rgba(102, 252, 241, 0.2);
+      border-radius: 10px;
+      padding: 15px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.9rem;
+      color: #00ffff;
+      overflow-x: auto;
+      margin: 25px 0;
+    }
+
+    @media (max-width: 480px) {
+      .article-title { font-size: 1.7rem; }
+      .article-body { font-size: 0.98rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="logo-area">
+      <div class="logo-vv-container">
+        <span class="char-v v-flipped">V</span>
+        <span class="char-v v-normal">V</span>
+      </div>
+      
+      <div class="text-wrapper">
+        <span class="logo-text-top">
+          <span class="gold-a">A</span>LL <span class="gold-a">A</span>NIMATION
+        </span>
+        <span class="logo-text-bottom">STUDIO</span>
+      </div>
+    </div>
+
+    <div class="menu-toggle" id="menuBtn"><span></span><span></span><span></span></div>
+    <div class="dropdown-menu" id="dropdownMenu">
+      <a href="../index.html">🏠 Beranda</a>
+      <a href="../Animasi Studio/studio.html">🎬 Animasi Studio</a>
+      <a href="#masuk">👤 Masuk Akun</a> 
+    </div>
+  </header>
+
+  <main class="article-page">
+    
+    <div class="btn-back-container">
+      <a href="../index.html" class="btn-back">← Kembali ke Beranda</a>
+    </div>
+
+    <header>
+      <div class="article-header-meta">Tutorial Populer</div>
+      <h1 class="article-title">Rahasia Membuat Animasi Teks Mengetik ala <span class="glow-text">"Nginjeum Gocap"</span></h1>
+      <div class="article-sub-info">Ditulis oleh Admin • ⏱️ 4 Menit Membaca</div>
+    </header>
+
+    <article class="article-body">
+      <p>Pernahkah kamu melihat situs web interaktif yang teksnya muncul satu per satu seolah-olah sedang diketik secara live? Efek animasi ini sangat populer digunakan untuk membuat pesan kejutan, salah satunya tren teks bernada candaan ala <span class="glow-text">"Nginjeum Gocap"</span>.</p>
+      
+      <p>Kabar baiknya, kamu tidak memerlukan database yang rumit atau server mahal untuk membuat efek ini. Cukup andalkan kombinasi murni antara konsep <span class="glow-text">CSS Keyframes</span> dan manipulasi string sederhana menggunakan <span class="glow-text">JavaScript</span>.</p>
+
+      <div class="code-box">
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+      </div>
+
+      <p>Dengan membatasi lebar kontainer teks menggunakan properti <code>overflow: hidden</code> dan menjalankan animasi bertahap, efek ketukan mesin代 tik yang rapi dapat tercipta tanpa membebani performa browser milik pengguna atau membuat web kamu menjadi lemot.</p>
+      
+      <p>Di All Animation Studio, kami mengintegrasikan teknologi ini agar setiap user dapat membuat halaman kustom mereka sendiri secara instan dan membagikannya ke teman-teman hanya lewat satu tautan pendek!</p>
+      
+      <p>SAYA MENGHARAPKAN DUKUNGAN NYA DARI ANDA SEMUA UNTUK MENGEMBANGKAN WEB INI</p>
+      
+      <p>TERIMAKASIH!!!🔥🔥🔥</p>
+    </article>
+
+  </main>
+
+  <script>
+    const menuBtn = document.getElementById('menuBtn');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+
+    menuBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle('active');
+      menuBtn.classList.toggle('active-btn');
+    });
+
+    document.addEventListener('click', () => {
+      dropdownMenu.classList.remove('active');
+      menuBtn.classList.remove('active-btn');
+    });
+  </script>
+</body>
+</html>
